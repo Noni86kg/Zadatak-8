@@ -17,50 +17,52 @@ let backlogArr = []
 let inProgressArr = []
 let completeArr = []
 let onHoldArr = []
+let allArray = []
+const allArrayNames = ['backlogArr', 'inProgressArr', 'completeArr', 'onHoldArr']
+const allLiNames = ['backlog', 'in-progress', 'complete', 'on-hold']
 
 function loadLocalData() {
-    backlogArr.forEach((arr) => {
-        const listEl = document.createElement('li')
-        listEl.textContent = arr
-        listEl.draggable = true
-        listEl.setAttribute('ondragstart', 'drag(event)')
-        backlogLi.appendChild(listEl)
-    })
-    inProgressArr.forEach((arr) => {
-        const listEl = document.createElement('li')
-        listEl.textContent = arr
-        listEl.draggable = true
-        listEl.setAttribute('ondragstart', 'drag(event)')
-        inProgressLi.appendChild(listEl)
-    })
-    completeArr.forEach((arr) => {
-        const listEl = document.createElement('li')
-        listEl.textContent = arr
-        listEl.draggable = true
-        listEl.setAttribute('ondragstart', 'drag(event)')
-        completeLi.appendChild(listEl)
-    })
-    onHoldArr.forEach((arr) => {
-        const listEl = document.createElement('li')
-        listEl.textContent = arr
-        listEl.draggable = true
-        listEl.setAttribute('ondragstart', 'drag(event)')
-        onHoldLi.appendChild(listEl)
-    })
+    for (let i=0; i<allArrayNames.length; i++) {
+        let allName = allArray[i]
+        allName.forEach((arr) => {
+            const listEl = document.createElement('li')
+            listEl.textContent = arr
+            listEl.draggable = true
+            listEl.setAttribute('ondragstart', 'drag(event)')
+            allLiList[i].appendChild(listEl)
+        })
+    }
 }
 
 window.onload = () => {
+
     if (localStorage.getItem('backlog')) {
-        backlogArr = localStorage.getItem("backlog").split(",")
+        backlogArr = localStorage.getItem('backlog').split(",")
+        allArray.push(backlogArr)
+    } else {
+        backlogArr = []
+        allArray.push(backlogArr)
     }
     if (localStorage.getItem('in-progress')) {
         inProgressArr = localStorage.getItem("in-progress").split(",")
+        allArray.push(inProgressArr)
+    } else {
+        inProgressArr = []
+        allArray.push(inProgressArr)
     }
     if (localStorage.getItem('complete')) {
         completeArr = localStorage.getItem("complete").split(",")
+        allArray.push(completeArr)
+    } else {
+        completeArr = []
+        allArray.push(completeArr)
     }
     if (localStorage.getItem('on-hold')) {
         onHoldArr = localStorage.getItem("on-hold").split(",")
+        allArray.push(onHoldArr)
+    } else {
+        onHoldArr = []
+        allArray.push(onHoldArr)
     }
     loadLocalData()
 }
@@ -90,29 +92,13 @@ function dragEnter(column) {
   }
 
 function rebuildArrays() {
-    backlogArr = []
-    for (let i = 0; i < backlogLi.children.length; i++) {
-        backlogArr.push(backlogLi.children[i].textContent);
-      }
-      localStorage.setItem('backlog', backlogArr)
-
-      inProgressArr = []
-    for (let i = 0; i < inProgressLi.children.length; i++) {
-        inProgressArr.push(inProgressLi.children[i].textContent);
-        }
-        localStorage.setItem('in-progress', inProgressArr)
-
-        completeArr = []
-    for (let i = 0; i < completeLi.children.length; i++) {
-        completeArr.push(completeLi.children[i].textContent);
-        }
-        localStorage.setItem('complete', completeArr)
-
-        onHoldArr = []
-    for (let i = 0; i < onHoldLi.children.length; i++) {
-        onHoldArr.push(onHoldLi.children[i].textContent);
-        }
-        localStorage.setItem('on-hold', onHoldArr)
+    for (let i=0; i<allArrayNames.length; i++) {
+        allArrayNames[i] = []
+        for (let j = 0; j < allLiList[i].children.length; j++) {
+            allArrayNames[i].push(allLiList[i].children[j].textContent);
+          }
+          localStorage.setItem(allLiNames[i], allArrayNames[i])
+    }
 }
 
 // Save items
@@ -143,7 +129,7 @@ saveBtns.forEach((saveBtn) => {
         } else if (sectionClass.classList.contains('on-hold')) {
             onHoldArr.push(addItemText)
             localStorage.setItem('on-hold', onHoldArr)
-        } 
-    }
+            } 
+        }
     })
 })
