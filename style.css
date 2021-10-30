@@ -1,0 +1,138 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    min-height: 100vh;
+    background-image: url(kitera-dent-4aZBWnYy3qM-unsplash.jpg);
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    background-repeat: no-repeat;
+}
+h1 {
+    color: white;
+    text-shadow: 2px 2px 4px black;
+    margin: 5vh 0;
+    font-size: 56px;
+    letter-spacing: 2px;
+}
+.container {
+    margin: 0 2% 0 2%;
+    display: flex;
+}
+section {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    background: rgba(0,0,0, .5);
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+    margin: 15px;
+}
+ul {
+    width: 100%;
+    font-size: 32px;
+    font-weight: 900;
+    text-shadow: 1px 1px 4px black;
+    padding: 15px;
+    border-radius: 15px;
+}
+.li-list {
+    min-height: 50px;
+}
+li {
+    list-style: none;
+    font-size: 24px;
+    padding: 10px;
+    background: #000;
+    border-radius: 15px;
+    margin-top: 15px;
+    overflow-x: auto;
+    cursor: pointer;
+}
+li::-webkit-scrollbar {
+    width: 10px;
+  }
+.backlog ul {
+    background: orange;
+}
+.in-progress ul {
+    background: DarkSlateGray;
+}
+.complete ul {
+    background: green;
+}
+.on-hold ul {
+    background: red;
+}
+.Btns {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+button {
+    border: none;
+    cursor: pointer;
+    padding: 15px 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    font-weight: 100;
+    transition: ease 0.3s;
+}
+.AddItem-Btn {
+    background: transparent;
+}
+.AddItem-Btn::first-letter {
+    font-size: 24px;
+}
+.AddItem-Btn:hover {
+    background: white;
+    color: black;
+}
+.backlog .SaveItem-Btn {
+    background: orange;
+}
+.in-progress .SaveItem-Btn {
+    background: DarkSlateGray;
+}
+.complete .SaveItem-Btn {
+    background: green;
+}
+.on-hold .SaveItem-Btn {
+    background: red;
+}
+textarea {
+    width: 100%;
+    height: 120px;
+    border-radius: 15px;
+    font-size: 20px;
+    padding: 15px;
+    display: none;
+}
+.hideTextarea.active textarea{
+    display: block;
+}
+/******************
+responive for ipad
+******************/
+@media (max-width:1200px) {
+    .container {
+        flex-wrap: wrap;
+    }
+    section {
+        width: calc(50% - 30px)
+    }
+}
+/******************
+responive for mob
+******************/
+@media (max-width:767px) {
+    section {
+        width: calc(100% - 30px)
+    }
+}
+

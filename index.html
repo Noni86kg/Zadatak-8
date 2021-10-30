@@ -8,7 +8,63 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <h1>Trello Klon</h1>
+    <div class="container">
+
+    <!-- backlog -->
+    <section class="backlog">
+        <ul>Backlog</ul>
+        <div class="li-list" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(0)"></div>
+        <div class="Btns">
+            <button class="AddItem-Btn">+ Add Item</button>
+            <button class="SaveItem-Btn">Save Item</button>
+        </div>
+        <div class="hideTextarea">
+            <textarea style="resize: none;" rows="6" cols="50"></textarea>
+        </div>
+    </section>
+
+    <!-- in progress -->
+    <section class="in-progress">
+        <ul>In Progress</ul>
+        <div class="li-list" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(1)"></div>
+        <div class="Btns">
+            <button class="AddItem-Btn">+ Add Item</button>
+            <button class="SaveItem-Btn">Save Item</button>
+        </div>
+        <div class="hideTextarea">
+            <textarea style="resize: none;" rows="6" cols="50"></textarea>
+        </div>
+    </section>
+
+    <!-- complete -->
+    <section class="complete">
+        <ul>Complete</ul>
+        <div class="li-list" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(2)"></div>
+        <div class="Btns">
+            <button class="AddItem-Btn">+ Add Item</button>
+            <button class="SaveItem-Btn">Save Item</button>
+        </div>
+        <div class="hideTextarea">
+            <textarea style="resize: none;" rows="6" cols="50"></textarea>
+        </div>
+    </section>
+
+    <!-- on hold -->
+    <section class="on-hold">
+        <ul>On Hold</ul>
+        <div class="li-list" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(3)"></div>
+        <div class="Btns">
+            <button class="AddItem-Btn">+ Add Item</button>
+            <button class="SaveItem-Btn">Save Item</button>
+        </div>
+        <div class="hideTextarea">
+            <textarea style="resize: none;" rows="6" cols="50"></textarea>
+        </div>
+    </section>
+
+        
+    </div>
 
     <script src="script.js"></script>
 </body>
