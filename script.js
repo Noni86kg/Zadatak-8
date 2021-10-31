@@ -13,58 +13,103 @@ addBtns.forEach((addBtn) => {
     })
 })
 
-let backlogArr = []
-let inProgressArr = []
-let completeArr = []
-let onHoldArr = []
-let allArray = []
-const allArrayNames = ['backlogArr', 'inProgressArr', 'completeArr', 'onHoldArr']
-const allLiNames = ['backlog', 'in-progress', 'complete', 'on-hold']
+let noni = {
+    backlogArr: [],
+    inProgressArr: [],
+    completeArr: [],
+    onHoldArr: [],
+    allArray: [],
+    allArrayNames: ['backlogArr', 'inProgressArr', 'completeArr', 'onHoldArr'],
+    allLiNames: ['backlog', 'in-progress', 'complete', 'on-hold'],
+    loadLocalData: function () {
+        for (let i=0; i<noni.allArrayNames.length; i++) {
+            let allName = noni.allArray[i]
+            allName.forEach((arr) => {
+                const listEl = document.createElement('li')
+                listEl.textContent = arr
+                listEl.draggable = true
+                listEl.setAttribute('ondragstart', 'drag(event)')
+                allLiList[i].appendChild(listEl)
+            })
+        }
+    },
 
-function loadLocalData() {
-    for (let i=0; i<allArrayNames.length; i++) {
-        let allName = allArray[i]
-        allName.forEach((arr) => {
+    saveBtnClick: function(e) {
+            const addItemText = e.target.parentElement.nextElementSibling.children[0].value
+            if(addItemText.trim() !== "") {
+            const sectionClass = e.target.closest('section')
+            const ul = sectionClass.children[1]
             const listEl = document.createElement('li')
-            listEl.textContent = arr
+            listEl.textContent = addItemText
             listEl.draggable = true
             listEl.setAttribute('ondragstart', 'drag(event)')
-            allLiList[i].appendChild(listEl)
-        })
+            ul.appendChild(listEl)
+            e.target.parentElement.nextElementSibling.children[0].value = "";
+            const Textarea = e.target.parentElement.nextElementSibling
+            Textarea.classList.remove('active')
+    
+            if (sectionClass.classList.contains('backlog')) {
+                noni.backlogArr.push(addItemText)
+                localStorage.setItem('backlog', noni.backlogArr)
+            } else if (sectionClass.classList.contains('in-progress')) {
+                noni.inProgressArr.push(addItemText)
+                localStorage.setItem('in-progress', noni.inProgressArr)
+            } else if (sectionClass.classList.contains('complete')) {
+                noni.completeArr.push(addItemText)
+                localStorage.setItem('complete', noni.completeArr)
+            } else if (sectionClass.classList.contains('on-hold')) {
+                noni.onHoldArr.push(addItemText)
+                localStorage.setItem('on-hold', noni.onHoldArr)
+                } 
+            }
+        },
+
+        rebuildArrays: function() {
+            for (let i=0; i<noni.allArrayNames.length; i++) {
+                noni.allArrayNames[i] = []
+                for (let j = 0; j < allLiList[i].children.length; j++) {
+                    noni.allArrayNames[i].push(allLiList[i].children[j].textContent);
+                  }
+                  localStorage.setItem(noni.allLiNames[i], noni.allArrayNames[i])
+            }
+        },
+
+        onLoadData: function() {
+        if (localStorage.getItem('backlog')) {
+            noni.backlogArr = localStorage.getItem('backlog').split(",")
+            noni.allArray.push(noni.backlogArr)
+        } else {
+            noni.backlogArr = []
+            noni.allArray.push(noni.backlogArr)
+        }
+        if (localStorage.getItem('in-progress')) {
+            noni.inProgressArr = localStorage.getItem("in-progress").split(",")
+            noni.allArray.push(noni.inProgressArr)
+        } else {
+            noni.inProgressArr = []
+            noni.allArray.push(noni.inProgressArr)
+        }
+        if (localStorage.getItem('complete')) {
+            noni.completeArr = localStorage.getItem("complete").split(",")
+            noni.allArray.push(noni.completeArr)
+        } else {
+            noni.completeArr = []
+            noni.allArray.push(noni.completeArr)
+        }
+        if (localStorage.getItem('on-hold')) {
+            noni.onHoldArr = localStorage.getItem("on-hold").split(",")
+            noni.allArray.push(noni.onHoldArr)
+        } else {
+            noni.onHoldArr = []
+            noni.allArray.push(noni.onHoldArr)
+        }
     }
 }
 
 window.onload = () => {
 
-    if (localStorage.getItem('backlog')) {
-        backlogArr = localStorage.getItem('backlog').split(",")
-        allArray.push(backlogArr)
-    } else {
-        backlogArr = []
-        allArray.push(backlogArr)
-    }
-    if (localStorage.getItem('in-progress')) {
-        inProgressArr = localStorage.getItem("in-progress").split(",")
-        allArray.push(inProgressArr)
-    } else {
-        inProgressArr = []
-        allArray.push(inProgressArr)
-    }
-    if (localStorage.getItem('complete')) {
-        completeArr = localStorage.getItem("complete").split(",")
-        allArray.push(completeArr)
-    } else {
-        completeArr = []
-        allArray.push(completeArr)
-    }
-    if (localStorage.getItem('on-hold')) {
-        onHoldArr = localStorage.getItem("on-hold").split(",")
-        allArray.push(onHoldArr)
-    } else {
-        onHoldArr = []
-        allArray.push(onHoldArr)
-    }
-    loadLocalData()
+    noni.onLoadData()
+    noni.loadLocalData()
 }
 
 let draggedItem;
@@ -84,52 +129,16 @@ function drop(e) {
     const parent = allLiList[currentColumn]
     parent.appendChild(draggedItem);
     dragging = false;
-    rebuildArrays();
+    noni.rebuildArrays();
 }
 
 function dragEnter(column) {
     currentColumn = column;
   }
 
-function rebuildArrays() {
-    for (let i=0; i<allArrayNames.length; i++) {
-        allArrayNames[i] = []
-        for (let j = 0; j < allLiList[i].children.length; j++) {
-            allArrayNames[i].push(allLiList[i].children[j].textContent);
-          }
-          localStorage.setItem(allLiNames[i], allArrayNames[i])
-    }
-}
-
 // Save items
 saveBtns.forEach((saveBtn) => {
     saveBtn.addEventListener('click', (e) => {
-        const addItemText = e.target.parentElement.nextElementSibling.children[0].value
-        if(addItemText.trim() !== "") {
-        const sectionClass = e.target.closest('section')
-        const ul = sectionClass.children[1]
-        const listEl = document.createElement('li')
-        listEl.textContent = addItemText
-        listEl.draggable = true
-        listEl.setAttribute('ondragstart', 'drag(event)')
-        ul.appendChild(listEl)
-        e.target.parentElement.nextElementSibling.children[0].value = "";
-        const Textarea = e.target.parentElement.nextElementSibling
-        Textarea.classList.remove('active')
-
-        if (sectionClass.classList.contains('backlog')) {
-            backlogArr.push(addItemText)
-            localStorage.setItem('backlog', backlogArr)
-        } else if (sectionClass.classList.contains('in-progress')) {
-            inProgressArr.push(addItemText)
-            localStorage.setItem('in-progress', inProgressArr)
-        } else if (sectionClass.classList.contains('complete')) {
-            completeArr.push(addItemText)
-            localStorage.setItem('complete', completeArr)
-        } else if (sectionClass.classList.contains('on-hold')) {
-            onHoldArr.push(addItemText)
-            localStorage.setItem('on-hold', onHoldArr)
-            } 
-        }
+        noni.saveBtnClick(e)
     })
 })

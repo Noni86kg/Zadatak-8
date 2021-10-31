@@ -42,6 +42,7 @@ ul {
 }
 .li-list {
     min-height: 50px;
+    padding-bottom: 25px;
 }
 li {
     list-style: none;
